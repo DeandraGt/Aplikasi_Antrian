@@ -10,8 +10,6 @@
 - **Kebutuhan:** login khusus admin, dashboard jelas, aksi cepat (panggil, layani, hapus)
 - **Pain point:** antrian batal masih tercatat, customer tidak merespons, sulit memantau banyak antrian
 
----
-
 ## User Story
 
 ### Customer
@@ -30,8 +28,6 @@
 - Sebagai admin, saya ingin memanggil antrian agar pelayanan berjalan sesuai urutan.
 - Sebagai admin, saya ingin menandai customer sudah dilayani agar riwayat tercatat.
 - Sebagai admin, saya ingin menghapus antrian batal/selesai agar daftar tetap bersih.
-
----
 
 ## Functional Requirements
 
@@ -57,7 +53,6 @@
 - Perubahan status admin langsung terlihat di sisi customer
 - Pembedaan hak akses customer dan admin
 
----
 
 ## Non-Functional Requirements
 
@@ -68,8 +63,6 @@
 - Reliability: data antrian tidak hilang saat aplikasi ditutup
 - Data integrity: tidak ada nomor antrian ganda
 - Compatibility: berjalan di berbagai ukuran layar
-
----
 
 ## Asumsi
 - Status antrian: menunggu, dipanggil, dilayani, selesai, batal
