@@ -641,8 +641,8 @@ button:disabled:hover {
     margin-top: 0;
   }
 
-  /* Tabel antrean butuh leeSbar pennuh; memaksanya berbagi baris hanya
-     membuatnya tergulir tanpa alasann. */
+  /* Tabel antrean butuh lebar penuh; memaksanya berbagi baris hanya
+     membuatnya tergulir tanpa alasan. */
   section[aria-labelledby="judul-daftar"] {
     flex-basis: 100%;
   }
