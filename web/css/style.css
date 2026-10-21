@@ -642,7 +642,7 @@ button:disabled:hover {
   }
 
   /* Tabel antrean butuh lebar penuh; memaksanya berbagi baris hanya
-     membuatnya tergulir tanpa alasann. */
+     membuatnya tergulir tanpa alasan. */
   section[aria-labelledby="judul-daftar"] {
     flex-basis: 100%;
   }
