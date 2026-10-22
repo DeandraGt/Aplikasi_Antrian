@@ -26,11 +26,11 @@
       <h2 id="judul-ringkasan">Ringkasan Hari Ini</h2>
       <dl>
         <dt>Sedang dipanggil</dt>
-        <dd>A003</dd>
+        <dd id="ringkas-dipanggil">—</dd>
         <dt>Menunggu</dt>
-        <dd>2</dd>
+        <dd id="ringkas-menunggu">0</dd>
         <dt>Selesai</dt>
-        <dd>2</dd>
+        <dd id="ringkas-selesai">0</dd>
       </dl>
     </section>
     <section aria-labelledby="judul-aksi">
@@ -40,76 +40,38 @@
         Petugas tidak memilih sendiri. Lihat FR-06 dan docs/architecture.md 6.2.
         Minggu 11 : tombol ini mengirim POST /api/queues/next
       -->
-      <form action="#daftar-antrean" method="post">
-        <button type="submit">Panggil Antrean Berikutnya</button>
+      <form id="form-panggil" action="#daftar-antrean" method="post">
+        <button type="submit" id="tombol-panggil">Panggil Antrean Berikutnya</button>
       </form>
-      <p>Antrean berikutnya yang akan dipanggil: <strong>A004</strong>.</p>
+      <p id="berikutnya">Belum ada antrean yang menunggu.</p>
+      <p class="pesan-galat" role="alert" id="pesan-aksi"></p>
     </section>
-        <section id="daftar-antrean" aria-labelledby="judul-daftar">
+    <section id="daftar-antrean" aria-labelledby="judul-daftar">
       <h2 id="judul-daftar">Daftar Antrean</h2>
-      <table>
-        <caption>Antrean hari ini, diurutkan dari yang paling awal dibuat.</caption>
-        <thead>
-          <tr>
-            <th scope="col">Nomor</th>
-            <th scope="col">Status</th>
-            <th scope="col">Dibuat</th>
-            <th scope="col">Dipanggil</th>
-            <th scope="col">Selesai</th>
-            <th scope="col">Aksi</th>
-<!--
-Pembungkus agar tabel dapat digulirr menyamping di layar sempit tanpa
-mendorong lebar halaman. role="region" + tabindex="0" membuat area
-gulir ini dapat dicapai dan digulir dengan keyboard.-->
-<div class="tabel-gulir" role="region" aria-label="Tabel daftar antrean" tabindex="0">
-<table>
-<caption>Antrean hari ini, urut dari yang terawal.</caption>
-<thead>
-            <th scope="row">A001</th>
-            <td>COMPLETED</td>
-            <td><time datetime="2026-09-03T08:30">08.30</time></td>
-            <td><time datetime="2026-09-03T08:32">08.32</time></td>
-            <td><time datetime="2026-09-03T08:41">08.41</time></td>
-            <td>—</td>
-          </tr>
-<tr>
-<th scope="row">A001</th>
-<td data-status="COMPLETED">COMPLETED</td>
-<td><time datetime="2026-09-03T08:30">08.30</time></td>
-<td><time datetime="2026-09-03T08:32">08.32</time></td>
-<td><time datetime="2026-09-03T08:41">08.41</time></td>
-<td>—</td>
-</tr>
-          <tr>
-            <th scope="row">A003</th>
-            <td>CALLED</td>
-            <td><time datetime="2026-09-03T09:02">09.02</time></td>
-            <td><time datetime="2026-09-03T09:15">09.15</time></td>
-            <td>—</td>
-            <td>
-              <!-- Minggu 11: POST /api/queues/3/complete -->
-              <form action="#daftar-antrean" method="post">
-                <button type="submit">Selesaikan A003</button>
-              </form>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">A004</th>
-            <td>WAITING</td>
-            <td><time datetime="2026-09-03T09:10">09.10</time></td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <th scope="row">A005</th>
-            <td>WAITING</td>
-            <td><time datetime="2026-09-03T09:18">09.18</time></td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-          </tr>
-        </tbody>
+      <!--
+        Pembungkus agar tabel dapat digulir menyamping di layar sempit tanpa
+        mendorong lebar halaman. role="region" + tabindex="0" membuat area
+        gulir ini dapat dicapai dan digulir dengan keyboard.
+      -->
+      <div class="tabel-gulir" role="region" aria-label="Tabel daftar antrean" tabindex="0">
+        <table>
+          <caption>Antrean hari ini, urut dari yang terawal.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Nomor</th>
+              <th scope="col">Status</th>
+              <th scope="col">Dibuat</th>
+              <th scope="col">Dipanggil</th>
+              <th scope="col">Selesai</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="isi-antrean">
+            <tr>
+              <td colspan="6">Belum ada antrean.</td>
+            </tr>
+          </tbody>
+
       </table>
     </section>
   </main>
