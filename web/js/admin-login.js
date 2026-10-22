@@ -37,3 +37,4 @@ keyboard tidak perlu mencarinya sendiri. */
   /* Belum ada kredensial yang diperiksa. Lihat catatan di atas. */
   window.location.assign(form.getAttribute("action"));
 });
+
