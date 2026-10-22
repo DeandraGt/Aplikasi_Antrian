@@ -39,3 +39,4 @@ el('form-ambil').addEventListener('submit', (event) => {
 
 tampilkanRingkasan();
 tampilkanNomorSaya();
+

@@ -19,3 +19,4 @@ datang dari luar pada Minggu 11. */
     wadah.append(item);
   }
 }
+
