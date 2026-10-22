@@ -33,17 +33,21 @@ Sampai saat itu, form belum melakukan apa pun.-->
     </main>
   </body>
 </html>
-<form action="admin-dashboard.html" method="post">
-  <fieldset>
-    <legend>Kredensial petugas</legend>
-            <!--
-          Wadah pesan kesalahan, kosong sampai ada kesalahan sungguhan.
-          role="alert" membuat isinya diumumkan pembaca layar begitu terisi,
-          tanpa memindahkan fokus pengguna. Selama kosong, CSS
-          menyembunyikannya lewat :empty sehingga tidak menyisakan ruang.
-        -->
-        <p class="pesan-galat" role="alert"></p>
-        <p>
+<!--
+novalidate mematikan gelembung pesan bawaan peramban, supaya
+JavaScript dapat menampilkan pesan sendiri di satu tempat yang
+konsisten. Atribut required dan type="email" TETAP dipasang: keduanya
+tetap menjadi sumber kebenaran aturan, tetap dibaca pembaca layar,
+dan tetap menyalakan gaya :user-invalid dari Minggu 04.-->
+<form id="form-masuk" action="admin-dashboard.html" method="post" novalidate>
+<fieldset>
+<legend>Kredensial petugas</legend>
+<!--
+Wadah pesan kesalahan, kosong sampai ada kesalahan sungguhan.
+role="alert" membuat isinya diumumkan pembaca layar begitu terisi,
+tanpa memindahkan fokus pengguna. Selama kosong, CSS
+menyembunyikannya lewat :empty sehingga tidak menyisakan ruang.-->
+<p class="pesan-galat" role="alert"></p>
           <label for="email">Email</label>
           <input
             type="email"
