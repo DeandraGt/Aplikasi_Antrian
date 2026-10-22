@@ -64,3 +64,4 @@ el("isi-antrean").addEventListener("click", (event) => {
   render();
 });
 render();
+
