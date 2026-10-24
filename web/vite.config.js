@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      /* QueueApp punya EMPAT halaman, masing-masing dengan alamatnya sendiri
+      /* QueueApp punya EMPAT hlaman, masing-masing dengan alamatnya sendiri
          — sama seperti Minggu 03 sampai 05. Vite perlu diberi tahu keempatnya
          agar ikut dibangun; tanpa daftar ini hanya index.html yang jadi.
          Ini BUKAN routing. Perpindahan halaman masih dikerjakan peramban
