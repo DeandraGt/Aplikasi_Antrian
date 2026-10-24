@@ -22,3 +22,4 @@ addEventListener, sekarang dioper sebagai prop onSubmit. */
     </section>
   );
 }
+

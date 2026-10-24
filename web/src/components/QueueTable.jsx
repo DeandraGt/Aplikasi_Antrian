@@ -13,6 +13,7 @@ function SelWaktu({ iso }) {
   );
 }
 
+
 export default function QueueTable({ antrean, onSelesaikan }) {
   return (
     <section id="daftar-antrean" aria-labelledby="judul-daftar">
