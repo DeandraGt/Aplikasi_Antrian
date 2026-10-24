@@ -4,7 +4,7 @@ export const STATUS = Object.freeze({
   COMPLETED: "COMPLETED",
 });
 
-/* Transisi yang diizinkan. Selain yang terdaftar di sini, ditolak.
+/* Transisi yang diizinkan. Selain yag terdaftar di sini, ditolak.
        WAITING → CALLED → COMPLETED
    COMPLETED tidak punya tujuan mana pun: antrean yang sudah selesai tidak
    bisa dikembalikan. */

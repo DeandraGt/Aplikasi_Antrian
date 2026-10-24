@@ -2,7 +2,7 @@ export const KUNCI = 'queueapp.prototype.v1';
 /* Data yang dimuat kembali TIDAK dipercaya begitu saja. Isinya dapat
    tertinggal dari versi lama, rusak separuh, atau diubah siapa pun lewat
    peralatan pengembang. Kebiasaan yang sama berlaku nanti untuk data yang
-   datang dari API pada Minggu 11. */
+   datang dari API pada Mnggu 11. */
 function bentuknyaBenar(data) {
   return (
     data !== null &&
