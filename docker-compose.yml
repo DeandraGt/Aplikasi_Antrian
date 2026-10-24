@@ -11,7 +11,7 @@
 #   docker compose up -d       menjalankan seluruh service
 #   docker compose ps          melihat status service
 #   docker compose logs -f     melihat log
-#   docker compose down        menghentikan service
+#   docker compose down        menghetikan service
 
 services:
   # --------------------------------------------------------------------------
