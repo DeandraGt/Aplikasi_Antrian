@@ -31,13 +31,20 @@
 }
 
 body,
-h1, h2, h3,
-p, ul, ol, dl, dd,
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
 figure {
   margin: 0;
 }
 
-ul, ol {
+ul,
+ol {
   padding-left: 0;
   list-style: none;
 }
@@ -49,7 +56,7 @@ img {
 
 button,
 input {
-  font: inherit;      /* elemen form tidak mewarisi font secara otomatis */
+  font: inherit; /* elemen form tidak mewarisi font secara otomatis */
   color: inherit;
 }
 
@@ -60,14 +67,14 @@ input {
 :root {
   /* Warna. Pasangan teks dan latar dipilih agar kontrasnya memenuhi
      WCAG AA (minimal 4.5:1 untuk teks biasa). */
-  --warna-latar:        #f6f7f9;
-  --warna-permukaan:    #ffffff;
-  --warna-teks:         #16191d;
+  --warna-latar: #f6f7f9;
+  --warna-permukaan: #ffffff;
+  --warna-teks: #16191d;
   --warna-teks-lembut: #4c545c;
-  --warna-garis:        #d3d8de;
-  --warna-utama:        #14488a;
+  --warna-garis: #d3d8de;
+  --warna-utama: #14488a;
   --warna-utama-gelap: #0e3465;
-  --warna-fokus:        #b8500a;
+  --warna-fokus: #b8500a;
 
   /* Skala jarak. Kelipatan tetap membuat spacing konsisten tanpa
      perlu menebak angka setiap kali. */
@@ -92,21 +99,36 @@ input {
 /* 3. TIPOGRAFI DASAR --------------------------------------------------------- */
 
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-size: var(--teks-dasar);
   line-height: 1.6;
   color: var(--warna-teks);
   background-color: var(--warna-latar);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   line-height: 1.25;
   text-wrap: balance;
 }
 
-h1 { font-size: var(--teks-besar); }
-h2 { font-size: var(--teks-sedang); }
-h3 { font-size: var(--teks-dasar); }
+h1 {
+  font-size: var(--teks-besar);
+}
+h2 {
+  font-size: var(--teks-sedang);
+}
+h3 {
+  font-size: var(--teks-dasar);
+}
 
 /* Baris teks yang terlalu panjang melelahkan dibaca. Batasnya diukur
    dengan ch — lebar karakter — bukan piksel. */
@@ -153,6 +175,21 @@ body > a[href="#konten-utama"]:focus {
   transform: translateY(0);
 }
 
+.lewati {
+  position: absolute;
+  left: var(--ruang-3);
+  top: var(--ruang-3);
+  z-index: 10;
+  padding: var(--ruang-2) var(--ruang-3);
+  background-color: var(--warna-permukaan);
+  border: 2px solid var(--warna-utama);
+  border-radius: var(--lengkung);
+  transform: translateY(-200%);
+}
+.lewati:focus {
+  transform: translateY(0);
+}
+header,
 header,
 main,
 footer {
@@ -400,9 +437,15 @@ td[data-status] {
   white-space: nowrap;
 }
 
-td[data-status="WAITING"]   { color: #7a4600; }
-td[data-status="CALLED"]    { color: #0e3465; }
-td[data-status="COMPLETED"] { color: #14562f; }
+td[data-status="WAITING"] {
+  color: #7a4600;
+}
+td[data-status="CALLED"] {
+  color: #0e3465;
+}
+td[data-status="COMPLETED"] {
+  color: #14562f;
+}
 
 /* Warna saja tidak boleh menjadi satu-satunya pembeda — pengguna dengan
    buta warna tidak akan menangkapnya. Karena itu setiap status juga
@@ -411,9 +454,15 @@ td[data-status]::before {
   margin-right: var(--ruang-1);
 }
 
-td[data-status="WAITING"]::before   { content: "○"; }
-td[data-status="CALLED"]::before    { content: "●"; }
-td[data-status="COMPLETED"]::before { content: "✓"; }
+td[data-status="WAITING"]::before {
+  content: "○";
+}
+td[data-status="CALLED"]::before {
+  content: "●";
+}
+td[data-status="COMPLETED"]::before {
+  content: "✓";
+}
 
 /* Tombol di dalam baris tabel lebih kecil daripada tombol utama. */
 td form {
@@ -573,14 +622,15 @@ button:disabled:hover {
 
 /* ---- Tablet ke atas ---- */
 @media (min-width: 48em) {
-
   /* Token pun boleh disesuaikan per ukuran layar. Satu baris di sini
      memperbesar seluruh nomor antrean di semua halaman. */
   :root {
     --teks-raksasa: 4.5rem;
   }
 
-  h1 { font-size: 2rem; }
+  h1 {
+    font-size: 2rem;
+  }
 
   /* Nama situs dan navigasi berdampingan begitu ada ruang. */
   header {
@@ -613,7 +663,6 @@ button:disabled:hover {
 
 /* ---- Desktop ke atas ---- */
 @media (min-width: 64em) {
-
   /* Kartu-kartu disusun berdampingan dan dibiarkan membungkus sendiri.
      flex: 1 1 18rem berarti "boleh melar, boleh menyusut, mulai dari
      18rem" — jumlah kolom per baris ditentukan ruang yang tersedia,
@@ -634,7 +683,7 @@ button:disabled:hover {
 
   main > section {
     flex: 1 1 18rem;
-    margin-top: 0;   /* jarak antar kartu kini diatur gap */
+    margin-top: 0; /* jarak antar kartu kini diatur gap */
   }
 
   main > form {
