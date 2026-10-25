@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+
 const HALAMAN_PENGUNJUNG = [
   { to: '/', label: 'Antrean Saat Ini' },
   { to: '/queue', label: 'Ambil Nomor' },
@@ -11,7 +14,7 @@ const HALAMAN_PETUGAS = [
 ];
 export default function Layout({ judul, petugas = false, catatan, children }) {
   const halaman = petugas ? HALAMAN_PETUGAS : HALAMAN_PENGUNJUNG;
-  /* Judul dokumen adalah hal pertama yang dibacakan pembaca layar dan satu
+  /* Judul dokumen adalah hal pertama yang dibacakan pembaca layar dan satu-
      satunya penanda pada daftar tab peramban. Satu dokumen untuk empat
      halaman berarti judulnya harus diganti setiap kali halamannya berganti. */
   useEffect(() => {
