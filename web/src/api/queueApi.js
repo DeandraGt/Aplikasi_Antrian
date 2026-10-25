@@ -91,3 +91,4 @@ export function panggilAntreanBerikutnya() {
 export function selesaikanAntrean(id) {
   return permintaan(() => terapkan((data) => completeQueue(data, id)));
 }
+

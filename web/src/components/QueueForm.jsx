@@ -1,8 +1,8 @@
-export default function QueueForm({ onAmbil }) {
+export default function QueueForm({ onAmbil, sibuk, pesan }) {
   function tanganiSubmit(event) {
     /* Sama seperti Minggu 05: tanpa ini peramban mengirim form dan memuat
-ulang halaman. Yang berubah hanya tempatnya — dulu dipasang dengan
-addEventListener, sekarang dioper sebagai prop onSubmit. */
+       ulang halaman. Yang berubah hanya tempatnya — dulu dipasang dengan
+       addEventListener, sekarang dioper sebagai prop onSubmit. */
     event.preventDefault();
     onAmbil();
   }
@@ -16,10 +16,13 @@ addEventListener, sekarang dioper sebagai prop onSubmit. */
             Nomor antrean akan dibuatkan untuk Anda. Anda tidak perlu mengisi
             data apa pun.
           </p>
-          <button type="submit">Ambil Nomor Antrean</button>
+          {/* Dimatikan selama permintaan berjalan, supaya satu klik tidak
+              membuat dua nomor. */}
+          <button type="submit" disabled={sibuk}>Ambil Nomor Antrean</button>
         </fieldset>
       </form>
+      {/* Galat dari aksi terakhir; kosong berarti tidak tampil. */}
+      <p className="pesan-galat" role="alert">{pesan}</p>
     </section>
   );
 }
-

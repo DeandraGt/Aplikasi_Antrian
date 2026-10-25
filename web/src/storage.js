@@ -1,3 +1,5 @@
+import { STATUS, emptyState } from "./queue.js";
+
 /* Kunci diberi akhiran versi. Bentuk datanya berubah pada Minggu 07 —
    myQueueId keluar dari daftar antrean — jadi versinya naik, dan data lama
    berbentuk v1 diabaikan dengan sendirinya tanpa kode migrasi. */
@@ -31,18 +33,38 @@ export function muatAntrean() {
     return {
       lastNumber: data.lastNumber,
       queues: data.queues,
-      myQueueId: Number.isInteger(data.myQueueId) ? data.myQueueId : null,
     };
   } catch {
     /* JSON rusak atau penyimpanan tidak dapat dibaca. */
     return emptyState();
   }
 }
-export function simpan(state) {
+export function simpanAntrean(state) {
   try {
-    localStorage.setItem(KUNCI, JSON.stringify(state));
+    localStorage.setItem(KUNCI_ANTREAN, JSON.stringify(state));
   } catch {
     /* Dapat gagal pada mode penyamaran atau ketika penyimpanan penuh.
        Aplikasi tetap berjalan, hanya tidak bertahan setelah dimuat ulang. */
+  }
+}
+/* ---- 2. Nomor saya -------------------------------------------------------
+   Id antrean milik pengunjung ini disimpan terpisah dari daftar antrean:
+   daftar antrean berumur berbeda dengan nomor milik perangkat ini. */
+export function muatNomorSaya() {
+  try {
+    const teks = localStorage.getItem(KUNCI_NOMOR_SAYA);
+    if (!teks) return null;
+    const id = JSON.parse(teks);
+    return Number.isInteger(id) ? id : null;
+  } catch {
+    /* JSON rusak atau penyimpanan tidak dapat dibaca. */
+    return null;
+  }
+}
+export function simpanNomorSaya(id) {
+  try {
+    localStorage.setItem(KUNCI_NOMOR_SAYA, JSON.stringify(id));
+  } catch {
+    /* Boleh gagal tanpa menghentikan aplikasi, sama seperti simpanAntrean. */
   }
 }

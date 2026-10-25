@@ -13,7 +13,6 @@ function SelWaktu({ iso }) {
   );
 }
 
-
 export default function QueueTable({ antrean, sibuk, onSelesaikan }) {
   return (
     <section id="daftar-antrean" aria-labelledby="judul-daftar">
@@ -48,14 +47,19 @@ export default function QueueTable({ antrean, sibuk, onSelesaikan }) {
                   <SelWaktu iso={baris.calledAt} />
                   <SelWaktu iso={baris.completedAt} />
                   <td>
+                    {/* Tombol ikut mati selama sebuah aksi berjalan, supaya
+                        satu klik tidak terkirim dua kali. */}
                     {baris.status === STATUS.CALLED ? (
                       <button
                         type="button"
-
+                        disabled={sibuk}
                         onClick={() => onSelesaikan(baris.id)}
                       >
+                        Selesaikan {baris.queueNumber}
                       </button>
-                      ) : null}
+                    ) : (
+                      '—'
+                    )}
                   </td>
                 </tr>
               ))
@@ -66,3 +70,4 @@ export default function QueueTable({ antrean, sibuk, onSelesaikan }) {
     </section>
   );
 }
+

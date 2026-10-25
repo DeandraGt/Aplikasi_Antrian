@@ -1,3 +1,5 @@
+import { formatJam } from '../format.js';
+
 export default function QueueDisplay({ dipanggil, menunggu }) {
   return (
     <>
