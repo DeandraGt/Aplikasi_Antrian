@@ -36,3 +36,4 @@ sama sekali. Autentikasi sungguhan ditambahkan pada Minggu 13."
     </Layout>
   );
 }
+
