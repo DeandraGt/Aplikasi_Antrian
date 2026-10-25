@@ -61,3 +61,4 @@ alur pengunjung dan alur petugas
 ## 5. Aksesibilitas               
 yang diterapkan, yang belum, dan cara memeriksanya
 ## 6. Yang Sengaja Belum Ada      
+
