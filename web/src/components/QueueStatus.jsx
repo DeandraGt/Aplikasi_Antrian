@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function QueueStatus({ antrean, tautanAmbil = false }) {
   return (
     <section id="konfirmasi" aria-labelledby="judul-nomor-saya" aria-live="polite">
@@ -13,7 +15,7 @@ export default function QueueStatus({ antrean, tautanAmbil = false }) {
             Belum ada nomor yang diambil dari perangkat ini.
           </p>
           {tautanAmbil && (
-            <p><a href="take-queue.html">Ambil nomor antrean</a></p>
+            <p><Link to="/queue">Ambil nomor antrean</Link></p>
           )}
         </>
       )}

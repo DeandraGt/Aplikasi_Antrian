@@ -1,3 +1,4 @@
+
 # QueueApp — development environment
 #
 # Tiga service, sesuai arsitektur di docs/requirements.md:
@@ -83,15 +84,23 @@ services:
     working_dir: /app
 
     # npm ci memasang persis isi package-lock.json — lebih cepat dan lebih
-    # dapat diulang daripada npm install. Dilewati bila dependency sudah ada
-    # di dalam volume, supaya container tidak memasang ulang setiap kali hidup.
+    # dapat diulang daripada npm install. Ia dijalankan hanya ketika perlu:
+    # salinan package-lock.json ditinggalkan di dalam volume node_modules, dan
+    # selama isinya masih sama persis, pemasangan dilewati sehingga container
+    # hidup dalam hitungan detik.
+    #
+    # Yang dibandingkan adalah lockfile, bukan sekadar ada-tidaknya folder
+    # node_modules. Menambah dependency — react-router-dom pada Minggu 07, dan
+    # yang menyusul pada minggu berikutnya — mengubah lockfile tetapi tidak
+    # mengosongkan volume. Tanpa perbandingan ini, container yang sudah ada
+    # tetap berjalan memakai dependency lama dan menyisakan halaman kosong
+    # yang sulit ditebak sebabnya.
     command: >
-      sh -c "[ -d node_modules/vite ] || npm ci --no-audit --no-fund;
-      npm run dev"
-
+      sh -c "cmp -s package-lock.json node_modules/.terpasang ||
+          { npm ci --no-audit --no-fund && cp package-lock.json node_modules/.terpasang; };
+          npm run dev"
     ports:
       - "${WEB_PORT}:5173"
-
     volumes:
       - ./web:/app
 
@@ -99,10 +108,8 @@ services:
       # akan menutupi hasil npm install di dalam container — dan dependency
       # yang dikompilasi untuk Linux tidak selalu cocok dengan host.
       - /app/node_modules
-
     depends_on:
       - server
-
     networks:
       - queueapp
 
@@ -112,3 +119,4 @@ volumes:
 networks:
   queueapp:
     driver: bridge
+

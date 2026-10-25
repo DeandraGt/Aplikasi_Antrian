@@ -4,7 +4,7 @@ export const STATUS = Object.freeze({
   COMPLETED: "COMPLETED",
 });
 
-/* Transisi yang diizinkan. Selain yag terdaftar di sini, ditolak.
+/* Transisi yang diizinkan. Selain yang terdaftar di sini, ditolak.
        WAITING → CALLED → COMPLETED
    COMPLETED tidak punya tujuan mana pun: antrean yang sudah selesai tidak
    bisa dikembalikan. */
@@ -37,7 +37,6 @@ export function emptyState() {
   return {
     lastNumber: 0,
     queues: [],
-    myQueueId: null,
   };
 }
 
@@ -45,37 +44,39 @@ export function emptyState() {
 Pada Minggu 05 setiap pembaca mengembalikan salinan, supaya kode tampilan
 tidak dapat mengubah data aslinya. Sekarang penjagaan itu tidak lagi
 diperlukan: tidak ada satu pun fungsi di berkas ini yang mengubah state di
-tempat, jadi tidak ada yang bisa dirusak. */
-export function currentCalled(state) {
-  return state.queues.find((queue) => queue.status === STATUS.CALLED) ?? null;
+tempat, jadi tidak ada yang bisa dirusak.
+Sejak Minggu 07 pembaca menerima daftar antreannya saja (array), bukan
+seluruh state, karena yang dipegang halaman adalah daftar dari useQueue. */
+export function currentCalled(queues) {
+  return queues.find((queue) => queue.status === STATUS.CALLED) ?? null;
 }
 
 /* Antrean WAITING tertua — yang akan dipanggil berikutnya (FR-06).
 Daftar selalu tersusun menurut waktu pembuatan, jadi yang pertama
 ditemukan sudah pasti yang tertua. */
-export function nextInLine(state) {
-  return state.queues.find((queue) => queue.status === STATUS.WAITING) ?? null;
+export function nextInLine(queues) {
+  return queues.find((queue) => queue.status === STATUS.WAITING) ?? null;
 }
 
-export function waitingQueues(state) {
-  return state.queues.filter((queue) => queue.status === STATUS.WAITING);
+export function waitingQueues(queues) {
+  return queues.filter((queue) => queue.status === STATUS.WAITING);
 }
 
-export function myQueue(state) {
-  if (state.myQueueId === null) return null;
-
-  return state.queues.find((queue) => queue.id === state.myQueueId) ?? null;
+/* Mencari satu antrean berdasarkan id. Mengembalikan null bila tidak ada,
+   misalnya ketika id tersimpan berasal dari data lama yang sudah diganti. */
+export function findQueue(queues, id) {
+  return queues.find((queue) => queue.id === id) ?? null;
 }
 
-export function summary(state) {
+export function summary(queues) {
   const hitung = (status) =>
-    state.queues.filter((queue) => queue.status === status).length;
+    queues.filter((queue) => queue.status === status).length;
 
   return {
     waiting: hitung(STATUS.WAITING),
     called: hitung(STATUS.CALLED),
     completed: hitung(STATUS.COMPLETED),
-    total: state.queues.length,
+    total: queues.length,
   };
 }
 
@@ -108,13 +109,12 @@ export function takeQueue(state) {
       /* Selalu ditambahkan di akhir, sehingga daftar tetap tersusun menurut
       waktu pembuatan — urutan yang diandalkan nextInLine. */
       queues: [...state.queues, queue],
-      myQueueId: queue.id,
     },
   };
 }
 
 export function callNext(state) {
-  const target = nextInLine(state);
+  const target = nextInLine(state.queues);
 
   if (!target) {
     return {

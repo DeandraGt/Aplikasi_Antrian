@@ -1,4 +1,4 @@
-export default function AdminPreview({ ringkasan, dipanggil, berikutnya, pesan, onPanggil }) {
+export default function AdminPreview({ ringkasan, dipanggil, berikutnya, pesan, sibuk, onPanggil }) {
   return (
     <>
       <section aria-labelledby="judul-ringkasan">
@@ -15,11 +15,11 @@ export default function AdminPreview({ ringkasan, dipanggil, berikutnya, pesan, 
       <section aria-labelledby="judul-aksi">
         <h2 id="judul-aksi">Aksi</h2>
         <form onSubmit={(event) => { event.preventDefault(); onPanggil(); }}>
-          {/* Tombol dimatikan ketika tidak ada yang bisa dipanggil. Meski
-              begitu queue.js tetap menolak permintaannya seandainya tombol
-              ini ditekan dengan cara lain — pembatasan di layar bukan
-              pengamanan. */}
-          <button type="submit" disabled={berikutnya === null}>
+          {/* Tombol dimatikan ketika tidak ada yang bisa dipanggil, dan
+              selama sebuah aksi masih berjalan. Meski begitu queue.js tetap
+              menolak permintaannya seandainya tombol ini ditekan dengan cara
+              lain — pembatasan di layar bukan pengamanan. */}
+          <button type="submit" disabled={berikutnya === null || sibuk}>
             Panggil Antrean Berikutnya
           </button>
         </form>

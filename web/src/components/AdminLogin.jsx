@@ -1,11 +1,11 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 
 export default function AdminLogin({ onMasuk }) {
   /* Input terkendali: nilainya hidup di state React, bukan di dalam DOM.
      Dengan begitu React selalu tahu isi form tanpa perlu membacanya kembali
      dari elemen. */
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [galat, setGalat] = useState(null);
 
   /* Ref dipakai untuk dua hal yang memang milik DOM dan bukan milik React:
@@ -21,8 +21,8 @@ export default function AdminLogin({ onMasuk }) {
     const aturan = [
       {
         ref: refEmail,
-        salah: () => email.trim() === '',
-        pesan: 'Email wajib diisi.',
+        salah: () => email.trim() === "",
+        pesan: "Email wajib diisi.",
       },
       {
         ref: refEmail,
@@ -30,12 +30,12 @@ export default function AdminLogin({ onMasuk }) {
            Peramban sudah memeriksanya lewat type="email"; hasilnya dibaca
            dari validity.typeMismatch. Satu sumber kebenaran, bukan dua. */
         salah: () => refEmail.current.validity.typeMismatch,
-        pesan: 'Format email tidak valid. Contoh: petugas@queueapp.test',
+        pesan: "Format email tidak valid. Contoh: petugas@queueapp.test",
       },
       {
         ref: refPassword,
-        salah: () => password === '',
-        pesan: 'Password wajib diisi.',
+        salah: () => password === "",
+        pesan: "Password wajib diisi.",
       },
     ];
 
@@ -56,8 +56,7 @@ export default function AdminLogin({ onMasuk }) {
      membingungkan. */
   const bersihkan = () => setGalat(null);
 
-  const ditandai = (ref) =>
-    galat?.ref === ref ? 'true' : undefined;
+  const ditandai = (ref) => (galat?.ref === ref ? "true" : undefined);
 
   return (
     <>
@@ -70,7 +69,7 @@ export default function AdminLogin({ onMasuk }) {
           {/* Selama kosong, CSS Minggu 04 menyembunyikan wadah ini lewat
               :empty sehingga tidak menyisakan ruang. */}
           <p className="pesan-galat" role="alert">
-            {galat?.pesan ?? ''}
+            {galat?.pesan ?? ""}
           </p>
 
           <p>
