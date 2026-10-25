@@ -14,20 +14,13 @@ function SelWaktu({ iso }) {
 }
 
 
-export default function QueueTable({ antrean, onSelesaikan }) {
+export default function QueueTable({ antrean, sibuk, onSelesaikan }) {
   return (
     <section id="daftar-antrean" aria-labelledby="judul-daftar">
       <h2 id="judul-daftar">Daftar Antrean</h2>
-
-      <div
-        className="tabel-gulir"
-        role="region"
-        aria-label="Tabel daftar antrean"
-        tabIndex={0}
-      >
+      <div className="tabel-gulir" role="region" aria-label="Tabel daftar antrean" tabIndex={0}>
         <table>
           <caption>Antrean hari ini, urut dari yang terawal.</caption>
-
           <thead>
             <tr>
               <th scope="col">Nomor</th>
@@ -38,7 +31,6 @@ export default function QueueTable({ antrean, onSelesaikan }) {
               <th scope="col">Aksi</th>
             </tr>
           </thead>
-
           <tbody>
             {antrean.length === 0 ? (
               <tr>
@@ -48,24 +40,22 @@ export default function QueueTable({ antrean, onSelesaikan }) {
               antrean.map((baris) => (
                 <tr key={baris.id}>
                   <th scope="row">{baris.queueNumber}</th>
-
                   {/* data-status inilah yang diwarnai dan diberi bentuk oleh
                       CSS Minggu 04 — nilainya sama persis dengan status pada
                       model data. */}
                   <td data-status={baris.status}>{baris.status}</td>
-
                   <SelWaktu iso={baris.createdAt} />
                   <SelWaktu iso={baris.calledAt} />
                   <SelWaktu iso={baris.completedAt} />
-
                   <td>
-                    {baris.status === STATUS.CALLED && (
+                    {baris.status === STATUS.CALLED ? (
                       <button
                         type="button"
+
                         onClick={() => onSelesaikan(baris.id)}
                       >
                       </button>
-                    )}
+                      ) : null}
                   </td>
                 </tr>
               ))

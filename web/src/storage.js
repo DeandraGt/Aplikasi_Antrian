@@ -1,25 +1,30 @@
-export const KUNCI = 'queueapp.prototype.v1';
-/* Data yang dimuat kembali TIDAK dipercaya begitu saja. Isinya dapat
+/* Kunci diberi akhiran versi. Bentuk datanya berubah pada Minggu 07 —
+   myQueueId keluar dari daftar antrean — jadi versinya naik, dan data lama
+   berbentuk v1 diabaikan dengan sendirinya tanpa kode migrasi. */
+export const KUNCI_ANTREAN = "queueapp.antrean.v2";
+export const KUNCI_NOMOR_SAYA = "queueapp.nomor-saya.v2";
+/* ---- 1. Daftar antrean (kelak: MySQL) ------------------------------------
+   Data yang dimuat kembali TIDAK dipercaya begitu saja. Isinya dapat
    tertinggal dari versi lama, rusak separuh, atau diubah siapa pun lewat
    peralatan pengembang. Kebiasaan yang sama berlaku nanti untuk data yang
-   datang dari API pada Mnggu 11. */
+   datang dari API pada Minggu 11. */
 function bentuknyaBenar(data) {
   return (
     data !== null &&
-    typeof data === 'object' &&
+    typeof data === "object" &&
     Number.isInteger(data.lastNumber) &&
     Array.isArray(data.queues) &&
     data.queues.every(
       (queue) =>
         Number.isInteger(queue.id) &&
-        typeof queue.queueNumber === 'string' &&
-        Object.hasOwn(STATUS, queue.status)
+        typeof queue.queueNumber === "string" &&
+        Object.hasOwn(STATUS, queue.status),
     )
   );
 }
-export function muat() {
+export function muatAntrean() {
   try {
-    const teks = localStorage.getItem(KUNCI);
+    const teks = localStorage.getItem(KUNCI_ANTREAN);
     if (!teks) return emptyState();
     const data = JSON.parse(teks);
     if (!bentuknyaBenar(data)) return emptyState();
