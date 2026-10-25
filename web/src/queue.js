@@ -3,7 +3,7 @@ export const STATUS = Object.freeze({
   CALLED: "CALLED",
   COMPLETED: "COMPLETED",
 });
-
+ 
 /* Transisi yang diizinkan. Selain yang terdaftar di sini, ditolak.
        WAITING → CALLED → COMPLETED
    COMPLETED tidak punya tujuan mana pun: antrean yang sudah selesai tidak
@@ -13,10 +13,10 @@ const TRANSISI_SAH = Object.freeze({
   [STATUS.CALLED]: [STATUS.COMPLETED],
   [STATUS.COMPLETED]: [],
 });
-
+ 
 const boleh = (dari, ke) => TRANSISI_SAH[dari].includes(ke);
 const sekarang = () => new Date().toISOString();
-
+ 
 /* ---- Nomor antrean ------------------------------------------------------
    PRD 29: berurutan, mudah dibaca, tidak bentrok pada kondisi normal.
        1 → A001      42 → A042      1234 → A1234
@@ -25,11 +25,11 @@ const sekarang = () => new Date().toISOString();
    tetapi tetap benar; lebih baik lebih panjang daripada berulang. */
 const AWALAN = "A";
 const PANJANG_DIGIT = 3;
-
+ 
 export function formatQueueNumber(angka) {
   return AWALAN + String(angka).padStart(PANJANG_DIGIT, "0");
 }
-
+ 
 /* ---- Bentuk state --------------------------------------------------------
    lastNumber disimpan terpisah dari daftar antrean supaya nomor tidak pernah
    dipakai ulang, bahkan bila antrean lama dihapus. */
@@ -39,7 +39,7 @@ export function emptyState() {
     queues: [],
   };
 }
-
+ 
 /* ---- Membaca state ------------------------------------------------------
 Pada Minggu 05 setiap pembaca mengembalikan salinan, supaya kode tampilan
 tidak dapat mengubah data aslinya. Sekarang penjagaan itu tidak lagi
@@ -50,28 +50,28 @@ seluruh state, karena yang dipegang halaman adalah daftar dari useQueue. */
 export function currentCalled(queues) {
   return queues.find((queue) => queue.status === STATUS.CALLED) ?? null;
 }
-
+ 
 /* Antrean WAITING tertua — yang akan dipanggil berikutnya (FR-06).
 Daftar selalu tersusun menurut waktu pembuatan, jadi yang pertama
 ditemukan sudah pasti yang tertua. */
 export function nextInLine(queues) {
   return queues.find((queue) => queue.status === STATUS.WAITING) ?? null;
 }
-
+ 
 export function waitingQueues(queues) {
   return queues.filter((queue) => queue.status === STATUS.WAITING);
 }
-
+ 
 /* Mencari satu antrean berdasarkan id. Mengembalikan null bila tidak ada,
    misalnya ketika id tersimpan berasal dari data lama yang sudah diganti. */
 export function findQueue(queues, id) {
   return queues.find((queue) => queue.id === id) ?? null;
 }
-
+ 
 export function summary(queues) {
   const hitung = (status) =>
     queues.filter((queue) => queue.status === status).length;
-
+ 
   return {
     waiting: hitung(STATUS.WAITING),
     called: hitung(STATUS.CALLED),
@@ -79,7 +79,7 @@ export function summary(queues) {
     total: queues.length,
   };
 }
-
+ 
 /* ---- Mengubah state ------------------------------------------------------
 Setiap fungsi menerima state dan mengembalikan salah satu dari dua bentuk:
 { ok: true,  state: stateBaru, queue: {...} }
@@ -91,7 +91,7 @@ Perhatikan pada bentuk kegagalan tidak ada state baru — memang tidak ada
 yang berubah. */
 export function takeQueue(state) {
   const angka = state.lastNumber + 1;
-
+ 
   const queue = {
     id: angka,
     queueNumber: formatQueueNumber(angka),
@@ -100,7 +100,7 @@ export function takeQueue(state) {
     calledAt: null,
     completedAt: null,
   };
-
+ 
   return {
     ok: true,
     queue,
@@ -112,10 +112,30 @@ export function takeQueue(state) {
     },
   };
 }
-
+ 
 export function callNext(state) {
+  /* Ditemukan pada review Minggu 08.
+     Sampai Minggu 07 fungsi ini mengerjakan dua perubahan dalam satu aksi:
+     antrean yang sedang dipanggil ditutup diam-diam, lalu antrean tertua
+     mulai dipanggil. Terasa praktis, tetapi FR-06 menuliskan syaratnya
+     dengan jelas — "satu aksi mengubah tepat satu antrean" — dan akibatnya
+     nyata: completedAt terisi padahal petugas tidak pernah menekan
+     "Selesaikan", sehingga catatan waktu selesai tidak dapat dipercaya.
+     Sekarang keduanya dipisahkan. Selama masih ada antrean CALLED,
+     memanggil berikutnya ditolak; petugas menyelesaikannya lebih dulu.
+     Dengan begitu setiap perubahan status punya satu aksi yang menyebabkannya. */
+  const sedangDipanggil = currentCalled(state.queues);
+ 
+  if (sedangDipanggil) {
+    return {
+      ok: false,
+      code: "QUEUE_ALREADY_CALLED",
+      message: `Antrean ${sedangDipanggil.queueNumber} masih dipanggil. Selesaikan lebih dulu.`,
+    };
+  }
+ 
   const target = nextInLine(state.queues);
-
+ 
   if (!target) {
     return {
       ok: false,
@@ -123,34 +143,26 @@ export function callNext(state) {
       message: "Tidak ada antrean yang menunggu.",
     };
   }
-
+ 
   const waktu = sekarang();
-
-  /* Satu kali map menangani dua perubahan sekaligus: antrean yang sedang
-  dipanggil ditutup, dan antrean tertua mulai dipanggil. Baris yang tidak
-  berubah dikembalikan apa adanya. */
-  const queues = state.queues.map((queue) => {
-    if (queue.status === STATUS.CALLED) {
-      return { ...queue, status: STATUS.COMPLETED, completedAt: waktu };
-    }
-
-    if (queue.id === target.id) {
-      return { ...queue, status: STATUS.CALLED, calledAt: waktu };
-    }
-
-    return queue;
-  });
-
+ 
+  /* Hanya satu baris yang berubah. Sisanya dikembalikan apa adanya. */
+  const queues = state.queues.map((queue) =>
+    queue.id === target.id
+      ? { ...queue, status: STATUS.CALLED, calledAt: waktu }
+      : queue
+  );
+ 
   return {
     ok: true,
     state: { ...state, queues },
     queue: queues.find((queue) => queue.id === target.id),
   };
 }
-
+ 
 export function completeQueue(state, id) {
   const target = state.queues.find((queue) => queue.id === id);
-
+ 
   if (!target) {
     return {
       ok: false,
@@ -158,7 +170,7 @@ export function completeQueue(state, id) {
       message: "Antrean tidak ditemukan.",
     };
   }
-
+ 
   if (!boleh(target.status, STATUS.COMPLETED)) {
     return {
       ok: false,
@@ -166,15 +178,15 @@ export function completeQueue(state, id) {
       message: `Antrean berstatus ${target.status} tidak dapat diselesaikan.`,
     };
   }
-
+ 
   const waktu = sekarang();
-
+ 
   const queues = state.queues.map((queue) =>
     queue.id === id
       ? { ...queue, status: STATUS.COMPLETED, completedAt: waktu }
       : queue
   );
-
+ 
   return {
     ok: true,
     state: { ...state, queues },

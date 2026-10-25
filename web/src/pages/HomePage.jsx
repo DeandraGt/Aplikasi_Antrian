@@ -4,13 +4,12 @@ import DataState from '../components/DataState.jsx';
 import QueueDisplay from '../components/QueueDisplay.jsx';
 import QueueStatus from '../components/QueueStatus.jsx';
 import StatusLegend from '../components/StatusLegend.jsx';
-
+ 
 export default function HomePage({ status, galat, antrean, nomorSaya, onMuatUlang }) {
   return (
     <Layout
       judul="Antrean Saat Ini"
-      catatan="Minggu 07: routing dan lapisan data. Data antrean masih hidup di peramban ini — belum
-ada API maupun database."
+      catatan="Minggu 08: checkpoint Web MVP. Seluruh alur antrean berjalan, tetapi datanya masih hidup di peramban ini — belum ada API maupun database."
     >
       <DataState status={status} galat={galat} onCobaLagi={onMuatUlang}>
         <QueueDisplay dipanggil={currentCalled(antrean)} menunggu={waitingQueues(antrean)} />
